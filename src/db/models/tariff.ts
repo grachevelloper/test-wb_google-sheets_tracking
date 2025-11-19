@@ -16,7 +16,6 @@ export class Tariff implements TariffType {
         return (trx || knex)(this.tableName);
     }
 
-    // Новый метод для вставки новых данных
     static async insert(data: CreateTariffData[], trx: Knex): Promise<TariffType[]> {
         const snakeCaseData = data.map(item => snakecaseKeys(item, { deep: true }));
 
@@ -52,7 +51,7 @@ export class Tariff implements TariffType {
     }
 
     static async existsForDate(date: string, trx: Knex): Promise<boolean> {
-        const result = await this.query(trx).where({ date }).limit(1).first();
+        const result = (await this.query(trx).where({ date }).limit(1).first()) as boolean;
         return !!result;
     }
 
